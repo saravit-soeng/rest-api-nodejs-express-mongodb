@@ -4,6 +4,7 @@ const mongoose = require('mongoose')
 const app = express()
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express')
+const basicAuth = require('basic-auth')
 const port = process.env.PORT
 
 // Connection to Database
@@ -11,6 +12,21 @@ mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTo
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('connected to database'))
+
+const auth = (req, res, next) => {
+  var user = basicAuth(req)
+  if(!user || !user.name || !user.pass) {
+    res.set('WWW-Authenticate','Basic realm=Authorization Required')
+    res.sendStatus(401);
+  }
+
+  if(user.name === 'admin' && user.pass === '1234') {
+    next()
+  }else{
+    res.set('WWW-Authenticate','Basic realm=Authorization Required')
+    res.sendStatus(401);
+  }
+}
 
 // To make express accept the json
 app.use(express.json())
@@ -30,7 +46,7 @@ const options = {
 };
 
 const specs = swaggerJsdoc(options);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
+app.use('/api-docs', auth, swaggerUi.serve, swaggerUi.setup(specs))
 
 const subscribersRouter = require('./routes/subscribers')
 app.use('/api/subscribers', subscribersRouter)

@@ -21,6 +21,8 @@ const getSubscriber = async (req, res, next) => {
  * @swagger
  * /api/subscribers:
  *    get:
+ *      tags:
+ *      - Subscriber
  *      description: This should return all subscribers
  *      produces:
  *      - application/json
@@ -42,6 +44,8 @@ router.get("/", async (req, res) => {
  * @swagger
  * /api/subscribers/{id}:
  *    get:
+ *      tags:
+ *      - Subscriber
  *      description: This should return specific subscriber by id
  *      produces:
  *      - application/json
@@ -63,6 +67,8 @@ router.get('/:id', getSubscriber, (req, res) => {
  * @swagger
  * /api/subscribers:
  *    post:
+ *      tags:
+ *      - Subscriber
  *      description: Create subscriber
  *      consumes:
  *       - application/json
@@ -100,6 +106,8 @@ router.post('/', async (req, res) => {
  * @swagger
  * /api/subscribers/{id}:
  *    put:
+ *      tags:
+ *      - Subscriber
  *      description: Update subscriber
  *      consumes:
  *       - application/json
@@ -142,6 +150,8 @@ router.put('/:id', getSubscriber, async (req, res) => {
  * @swagger
  * /api/subscribers/{id}:
  *    delete:
+ *      tags:
+ *      - Subscriber
  *      description: This should delete specific subscriber by id
  *      produces:
  *      - application/json
